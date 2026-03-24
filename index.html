@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Ranch Activity Sign-Up · March 22–28</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ── PASTE YOUR FORMSPREE ENDPOINT in the script below ── */
+
+  :root {
+    --sand:   #F5EDD6;
+    --leather:#8B5E3C;
+    --rust:   #C0522B;
+    --smoke:  #3D2C1E;
+    --sage:   #7A8C6E;
+    --cream:  #FDF6E3;
+    --gold:   #C9962A;
+    --border: #D4B896;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+  body {
+    background: var(--sand);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--smoke);
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at top, #e8d5b0 0%, #F5EDD6 70%);
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--smoke);
+    color: var(--sand);
+    text-align: center;
+    padding: 26px 20px 22px;
+    position: relative;
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--rust), var(--gold), var(--rust));
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 5vw, 30px);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.15;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--border);
+    margin-top: 6px;
+    font-style: italic;
+    letter-spacing: 0.4px;
+  }
+
+  /* ── NAME FIELD ── */
+  .name-wrap {
+    background: var(--cream);
+    border-bottom: 2px solid var(--border);
+    padding: 18px 16px;
+  }
+  .field-label {
+    display: block;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.8px;
+    color: var(--leather);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 7px;
+    background: var(--sand);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 16px; /* prevents iOS zoom */
+    color: var(--smoke);
+    -webkit-appearance: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus { outline: none; border-color: var(--rust); }
+
+  /* ── DAY BLOCKS ── */
+  .day-block {
+    margin: 13px 13px 0;
+    border-radius: 11px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(61,44,30,0.12);
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /* Day colors */
+  .d-sun { background: #7A4F2A; color: var(--sand); }
+  .d-mon { background: #4E3220; color: var(--sand); }
+  .d-tue { background: #6B3D24; color: var(--sand); }
+  .d-wed { background: #7A5234; color: var(--sand); }
+  .d-thu { background: #5A3828; color: var(--sand); }
+  .d-fri { background: #6A4830; color: var(--sand); }
+  .d-sat { background: #3D2410; color: var(--sand); }
+
+  .day-name { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 700; }
+  .day-date { font-size: 11px; opacity: 0.72; font-style: italic; margin-top: 1px; }
+  .day-arrow { font-size: 16px; transition: transform 0.22s ease; }
+  .day-arrow.open { transform: rotate(180deg); }
+
+  .day-body {
+    background: var(--cream);
+    border: 2px solid var(--border);
+    border-top: none;
+    border-radius: 0 0 11px 11px;
+    display: none;
+  }
+  .day-body.open { display: block; }
+
+  /* ── TIME GROUPS ── */
+  .tg { border-bottom: 1px solid #EDE0C8; }
+  .tg:last-child { border-bottom: none; }
+  .tg-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.6px;
+    color: var(--rust);
+    font-weight: 700;
+    padding: 9px 16px 3px;
+  }
+
+  /* ── ACTIVITY ROWS ── */
+  .act {
+    display: flex;
+    align-items: center;
+    padding: 11px 16px;
+    gap: 13px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 50px;
+  }
+  .act:active { background: #EEE0C4; }
+
+  .act input[type="checkbox"] {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: var(--sand);
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .act input[type="checkbox"]:checked {
+    background: var(--rust);
+    border-color: var(--rust);
+  }
+  .act input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 1;
+  }
+  .act-name { font-size: 15px; flex: 1; line-height: 1.3; }
+  .act-dur  { font-size: 11px; color: var(--sage); font-style: italic; white-space: nowrap; }
+
+  /* ── EVENING BAR ── */
+  .evening {
+    background: var(--smoke);
+    color: var(--sand);
+    padding: 10px 16px;
+    font-size: 13px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+  }
+
+  /* ── NOTES + SUBMIT ── */
+  .submit-wrap { padding: 20px 13px 44px; }
+  textarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid var(--border);
+    border-radius: 7px;
+    background: var(--cream);
+    font-family: 'Libre Baskerville', serif;
+    font-size: 15px;
+    color: var(--smoke);
+    -webkit-appearance: none;
+    resize: vertical;
+    min-height: 90px;
+    margin-bottom: 18px;
+    transition: border-color 0.2s;
+  }
+  textarea:focus { outline: none; border-color: var(--rust); }
+
+  .btn-submit {
+    width: 100%;
+    padding: 18px;
+    background: var(--rust);
+    color: var(--cream);
+    border: none;
+    border-radius: 9px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: 0 4px 16px rgba(192,82,43,0.38);
+    transition: opacity 0.2s, transform 0.1s;
+  }
+  .btn-submit:active { opacity: 0.85; transform: scale(0.99); }
+  .btn-submit:disabled { background: #b0996e; box-shadow: none; cursor: default; }
+
+  /* ── ERROR BANNER ── */
+  .error-banner {
+    display: none;
+    background: #b03030;
+    color: white;
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: center;
+    margin: 0 13px 12px;
+    border-radius: 8px;
+  }
+
+  /* ── SUCCESS SCREEN ── */
+  .success-screen {
+    display: none;
+    padding: 40px 18px 60px;
+    text-align: center;
+    animation: fadeUp 0.4s ease;
+  }
+  .success-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--rust);
+    margin-bottom: 10px;
+  }
+  .success-screen .tagline {
+    color: var(--leather);
+    font-style: italic;
+    margin-bottom: 26px;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+  .summary-card {
+    background: var(--cream);
+    border: 2px solid var(--border);
+    border-radius: 11px;
+    text-align: left;
+    margin-bottom: 14px;
+    overflow: hidden;
+  }
+  .summary-card-head {
+    background: var(--leather);
+    color: var(--sand);
+    padding: 10px 14px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+  }
+  .summary-row {
+    padding: 8px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid #EDE0C8;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row-dur { color: var(--sage); font-style: italic; font-size: 11px; white-space: nowrap; }
+
+  .btn-restart {
+    margin-top: 22px;
+    background: transparent;
+    border: 2px solid var(--leather);
+    color: var(--leather);
+    padding: 13px 30px;
+    border-radius: 9px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-sub">Ranch Stay · March 22–28, 2026</div>
+  <h1>Activity Sign-Up</h1>
+  <div class="header-sub">Check the activities you'd like to join, then submit</div>
+</header>
+
+<!-- ── FORM ── -->
+<div id="formWrap">
+
+  <div class="name-wrap">
+    <label class="field-label" for="guestName">Your Name</label>
+    <input type="text" id="guestName" placeholder="First & Last Name" autocomplete="name">
+  </div>
+
+  <div class="error-banner" id="errorBanner">Something went wrong — please try again.</div>
+
+  <!-- ════════════════ SUNDAY 3/22 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-sun" onclick="toggle(this)">
+      <div><div class="day-name">Sunday</div><div class="day-date">March 22</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="8:30am"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="8:30am"><span class="act-name">Sling Shots</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="10:35am"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="10:35am"><span class="act-name">Walking Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="11:00am"><span class="act-name">Horseshoe Decorating</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="2:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="2:00pm"><span class="act-name">Jeep Tours</span><span class="act-dur">1 hr 45 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="2:00pm"><span class="act-name">LA Crafts</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="4:00pm"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="4:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="4:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sun 3/22" data-time="4:00pm"><span class="act-name">Cowboy Tracking</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="evening">🌟 8:00pm — Star Party</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ MONDAY 3/23 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-mon" onclick="toggle(this)">
+      <div><div class="day-name">Monday</div><div class="day-date">March 23</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">7:30am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="7:30am"><span class="act-name">Breakfast Ride</span><span class="act-dur">2 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="8:30am"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="8:30am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="8:30am"><span class="act-name">Knife Throwing</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="9:30am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:00am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="10:00am"><span class="act-name">Jeep Tours</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="10:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="10:35am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="11:00am"><span class="act-name">Leather Workshop</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="11:00am"><span class="act-name">Cattle Sorting</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:30am</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="11:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="2:00pm"><span class="act-name">Slow Mountain "Sidewinder"</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="2:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="2:30pm"><span class="act-name">Afternoon Yoga</span><span class="act-dur">45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="3:30pm"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="4:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="4:00pm"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Mon 3/23" data-time="4:30pm"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="evening">🐾 8:00pm — Critter Show</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ TUESDAY 3/24 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-tue" onclick="toggle(this)">
+      <div><div class="day-name">Tuesday</div><div class="day-date">March 24</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">7:30am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="7:30am"><span class="act-name">Breakfast Ride</span><span class="act-dur">2 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:00am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="8:00am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="8:30am"><span class="act-name">Half-Day Ride "Echo Mountain"</span><span class="act-dur">3.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="8:30am"><span class="act-name">E-Biking (Intermediate)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="8:30am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="9:30am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:00am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="10:00am"><span class="act-name">Jeep Tours</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="10:30am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="10:30am"><span class="act-name">Shooting (45.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="10:30am"><span class="act-name">Walking Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="10:35am"><span class="act-name">Knife Throwing</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="11:00am"><span class="act-name">Windchime Craft Class</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="11:00am"><span class="act-name">Cattle Sorting</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="11:00am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="2:00pm"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="2:00pm"><span class="act-name">Sling Shots</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="2:30pm"><span class="act-name">Wine and Cheese</span><span class="act-dur">3.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="3:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="4:00pm"><span class="act-name">Black Powder Shooting</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="4:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Tue 3/24" data-time="4:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="evening">🎸 8:00pm — Marty Fresse</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ WEDNESDAY 3/25 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-wed" onclick="toggle(this)">
+      <div><div class="day-name">Wednesday</div><div class="day-date">March 25</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">8:00am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="8:00am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="8:30am"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="8:30am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:00am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="9:00am"><span class="act-name">Slow Mountain "Lookout"</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:15am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="9:15am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="9:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="9:30am"><span class="act-name">Horsemanship Lesson</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="10:30am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="10:30am"><span class="act-name">Fast Mountain "Lookout"</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="10:35am"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="10:35am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="11:00am"><span class="act-name">Cowboy Crafts</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="2:00pm"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="2:00pm"><span class="act-name">Jeep Tour</span><span class="act-dur">1 hr 45 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="2:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="3:00pm"><span class="act-name">Groundwork Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="4:00pm"><span class="act-name">Groundwork Lessons</span><span class="act-dur">50 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Wed 3/25" data-time="4:00pm"><span class="act-name">Rodeo</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="evening">🎩 8:00pm — Magic Show</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ THURSDAY 3/26 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-thu" onclick="toggle(this)">
+      <div><div class="day-name">Thursday</div><div class="day-date">March 26</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">7:00am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="7:00am"><span class="act-name">Rattlesnake Ridge Hike</span><span class="act-dur">2 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:00am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:00am"><span class="act-name">Incredible Edible Desert</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:00am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:30am"><span class="act-name">E-Biking (Intermediate)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:30am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="8:30am"><span class="act-name">Knife Throwing</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:00am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="9:00am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="9:30am"><span class="act-name">All Day Ride</span><span class="act-dur">All day</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="9:30am"><span class="act-name">Horsemanship Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="10:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="10:30am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="10:35am"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="10:35am"><span class="act-name">Shooting (45.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="10:35am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="11:00am"><span class="act-name">Leather Workshop</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="11:00am"><span class="act-name">Cattle Sorting</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:30am</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="11:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="2:00pm"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="2:00pm"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="2:00pm"><span class="act-name">Jeep Tour</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="3:00pm"><span class="act-name">Groundwork Lesson</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="3:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="4:00pm"><span class="act-name">Black Powder Shooting</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="4:00pm"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="4:00pm"><span class="act-name">Groundwork Lesson</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Thu 3/26" data-time="4:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="evening">🤠 8:00pm — Buck Helton (Cowboy Singer)</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ FRIDAY 3/27 ════════════════ -->
+  <div class="day-block">
+    <div class="day-header d-fri" onclick="toggle(this)">
+      <div><div class="day-name">Friday</div><div class="day-date">March 27</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">7:00am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="7:00am"><span class="act-name">Echo Mountain Hike</span><span class="act-dur">2 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:00am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="8:00am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="8:30am"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="8:30am"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="8:30am"><span class="act-name">Slow Mountain "Suicide Pass"</span><span class="act-dur">2 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:00am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="9:00am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:15am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="9:15am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="9:30am"><span class="act-name">Horsemanship Lesson</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:00am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="10:00am"><span class="act-name">Jeep Tour</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="10:30am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="10:30am"><span class="act-name">Fast Mountain "Suicide Pass"</span><span class="act-dur">1 hr 45 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="10:35am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="11:00am"><span class="act-name">Cowboy Crafts</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="2:00pm"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="2:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="2:30pm"><span class="act-name">Beer &amp; Cheetos Ride</span><span class="act-dur">3.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="3:00pm"><span class="act-name">Groundwork Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="3:30pm"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="4:00pm"><span class="act-name">Groundwork Lessons</span><span class="act-dur">50 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="4:00pm"><span class="act-name">Knife Throwing</span><span class="act-dur">—</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="4:00pm"><span class="act-name">Sling Shots</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="4:00pm"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Fri 3/27" data-time="4:30pm"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="evening">🕺 8:00pm — Line Dancing</div>
+    </div>
+  </div>
+
+  <!-- ════════════════ SATURDAY 3/28 ════════════════ -->
+  <div class="day-block" style="margin-bottom:13px;">
+    <div class="day-header d-sat" onclick="toggle(this)">
+      <div><div class="day-name">Saturday</div><div class="day-date">March 28</div></div>
+      <div class="day-arrow">▼</div>
+    </div>
+    <div class="day-body">
+      <div class="tg"><div class="tg-label">7:30am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="7:30am"><span class="act-name">Breakfast Ride w/ "Panther Peak"</span><span class="act-dur">4 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:00am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="8:00am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">8:30am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="8:30am"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="8:30am"><span class="act-name">E-Biking (Intermediate)</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="8:30am"><span class="act-name">Knife Throwing</span><span class="act-dur">—</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">9:30am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="9:30am"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:30am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="10:30am"><span class="act-name">Rock Climbing</span><span class="act-dur">2.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="10:30am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">10:35am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="10:35am"><span class="act-name">Walking Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="10:35am"><span class="act-name">Axe Throwing</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">11:00am</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="11:00am"><span class="act-name">Windchime Craft Class</span><span class="act-dur">1 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="11:00am"><span class="act-name">Fast Ride</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">1:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="1:00pm"><span class="act-name">Lessons</span><span class="act-dur">50 min</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="2:00pm"><span class="act-name">Slow Ride</span><span class="act-dur">1 hr 15 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="2:00pm"><span class="act-name">Jeep Tours</span><span class="act-dur">1 hr 45 min</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="2:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="2:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">2:15pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="2:15pm"><span class="act-name">Half-Day Ride "Perimeter"</span><span class="act-dur">3 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">3:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="3:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:00pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="4:00pm"><span class="act-name">Beginner Archery</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="4:00pm"><span class="act-name">Shooting (22.cal)</span><span class="act-dur">1.5 hr</span></label>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="4:00pm"><span class="act-name">E-Biking (Beginner)</span><span class="act-dur">1 hr</span></label>
+      </div>
+      <div class="tg"><div class="tg-label">4:30pm</div>
+        <label class="act"><input type="checkbox" data-day="Sat 3/28" data-time="4:30pm"><span class="act-name">Fast Ride or Team Penning</span><span class="act-dur">50 min / 1 hr</span></label>
+      </div>
+      <div class="evening">🎶 8:00pm — David Rychener (Cowboy Singer)</div>
+    </div>
+  </div>
+
+  <div class="submit-wrap">
+    <label class="field-label" for="notes">Special Requests or Notes</label>
+    <textarea id="notes" placeholder="Dietary restrictions, physical limitations, anything you'd love to try…"></textarea>
+    <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">Send In My Choices →</button>
+  </div>
+
+</div><!-- /formWrap -->
+
+<!-- ── SUCCESS SCREEN ── -->
+<div class="success-screen" id="successScreen">
+  <div style="font-size:48px;margin-bottom:12px;">🤠</div>
+  <h2>Yeehaw!</h2>
+  <p class="tagline" id="successMsg"></p>
+  <div id="successCards"></div>
+  <button class="btn-restart" onclick="restart()">← Change My Selections</button>
+</div>
+
+<script>
+  // ── YOUR EMAIL ADDRESS ────────────────────────────────────────────
+  const YOUR_PHONE = 'YOUR_PHONE_HERE'; // <-- replace with your phone number e.g. '3105551234'
+
+  // ── Accordion ────────────────────────────────────────────────────
+  function toggle(header) {
+    const body  = header.nextElementSibling;
+    const arrow = header.querySelector('.day-arrow');
+    const open  = body.classList.toggle('open');
+    arrow.classList.toggle('open', open);
+  }
+
+  // ── Submit via mailto ─────────────────────────────────────────────
+  function handleSubmit() {
+    const name = document.getElementById('guestName').value.trim();
+    if (!name) {
+      alert('Please enter your name before submitting.');
+      document.getElementById('guestName').focus();
+      return;
+    }
+
+    const checked = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'));
+    const activities = checked.map(cb => ({
+      day:  cb.dataset.day,
+      time: cb.dataset.time,
+      name: cb.closest('.act').querySelector('.act-name').textContent,
+      dur:  cb.closest('.act').querySelector('.act-dur').textContent,
+    }));
+
+    const notes = document.getElementById('notes').value.trim();
+
+    // Build readable email body
+    const byDay = {};
+    activities.forEach(a => {
+      if (!byDay[a.day]) byDay[a.day] = [];
+      byDay[a.day].push('  ' + a.time + '  ' + a.name + ' (' + a.dur + ')');
+    });
+
+    let body = 'RANCH ACTIVITY SIGN-UP\n';
+    body += '================================\n';
+    body += 'Guest: ' + name + '\n';
+    body += 'Total activities: ' + activities.length + '\n\n';
+
+    if (activities.length === 0) {
+      body += '(no activities selected)\n';
+    } else {
+      for (const [day, lines] of Object.entries(byDay)) {
+        body += day + ':\n';
+        lines.forEach(l => { body += l + '\n'; });
+        body += '\n';
+      }
+    }
+    if (notes) body += 'Notes: ' + notes + '\n';
+
+    const bodyEnc = encodeURIComponent(body);
+    window.location.href = 'sms:' + YOUR_PHONE + '&body=' + bodyEnc;
+
+    showSuccess(name, activities, notes);
+  }
+
+  // ── Success screen ────────────────────────────────────────────────
+  function showSuccess(name, activities, notes) {
+    document.getElementById('successMsg').textContent =
+      name + ', your ' + activities.length + ' activit' + (activities.length === 1 ? 'y has' : 'ies have') +
+      ' been sent! The organizer will receive an email with your picks.';
+
+    const byDay = {};
+    activities.forEach(a => { if (!byDay[a.day]) byDay[a.day] = []; byDay[a.day].push(a); });
+
+    let html = '';
+    for (const [day, acts] of Object.entries(byDay)) {
+      html += `<div class="summary-card">
+        <div class="summary-card-head">${day}</div>`;
+      acts.forEach(a => {
+        html += `<div class="summary-row">
+          <span>${a.time} — ${a.name}</span>
+          <span class="summary-row-dur">${a.dur}</span>
+        </div>`;
+      });
+      html += '</div>';
+    }
+    if (!html) html = `<p style="color:var(--leather);font-style:italic;padding:8px 0;">No activities selected.</p>`;
+    if (notes) {
+      html += `<div class="summary-card">
+        <div class="summary-card-head" style="background:var(--sage);">📝 Notes</div>
+        <div class="summary-row">${notes}</div>
+      </div>`;
+    }
+
+    document.getElementById('successCards').innerHTML = html;
+    document.getElementById('formWrap').style.display = 'none';
+    document.getElementById('successScreen').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  // ── Restart ───────────────────────────────────────────────────────
+  function restart() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    document.getElementById('guestName').value = '';
+    document.getElementById('notes').value = '';
+    document.getElementById('submitBtn').disabled = false;
+    document.getElementById('submitBtn').textContent = 'Send In My Choices →';
+    document.getElementById('formWrap').style.display = 'block';
+    document.getElementById('successScreen').style.display = 'none';
+    window.scrollTo(0, 0);
+  }
+</script>
+</body>
+</html>
+
